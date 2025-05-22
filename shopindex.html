@@ -1,0 +1,631 @@
+ <!DOCTYPE html>
+<html lang="en" class="transition duration-300">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Trendy Tees | Shop</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    html { scroll-behavior: smooth; }
+    .fade-in { animation: fadeIn 0.5s ease-in; }
+    @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+    .cart-slide { 
+      transform: translateX(100%);
+      transition: transform 0.3s ease-in-out;
+    }
+    .cart-slide.open { transform: translateX(0); }
+    .product-card:hover { transform: translateY(-5px); }
+    .product-card { transition: all 0.3s ease; }
+    .scroll-to-top {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      display: none;
+      background-color: #2563eb;
+      color: white;
+      border-radius: 50%;
+      padding: 0.5rem 0.7rem;
+      font-size: 1.5rem;
+      cursor: pointer;
+      z-index: 1000;
+    }
+    .scroll-to-top:hover { background-color: #1d4ed8; }
+    .loading-spinner {
+      border: 4px solid rgba(0, 0, 0, 0.1);
+      border-radius: 50%;
+      border-top: 4px solid #3498db;
+      width: 40px;
+      height: 40px;
+      animation: spin 1s linear infinite;
+    }
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+  </style>
+</head>
+<body class="bg-gray-50 dark:bg-gray-900 text-gray-800 dark:text-gray-100 font-sans transition duration-300">
+  
+  <!-- Scroll to Top Button -->
+  <button id="scrollTopBtn" class="scroll-to-top">&#8679;</button>
+
+  <!-- Navigation -->
+  <nav class="bg-white dark:bg-gray-800 shadow sticky top-0 z-50">
+    <div class="container mx-auto px-4">
+      <div class="flex justify-between items-center py-4">
+        <div class="flex items-center">
+          <a href="index.html" class="text-2xl font-bold text-blue-600 dark:text-blue-400">Trendy Tees</a>
+        </div>
+        
+        <div class="hidden md:flex space-x-8">
+          <a href="index.html" class="hover:text-blue-500 dark:hover:text-blue-400">Home</a>
+          <a href="#products" class="hover:text-blue-500 dark:hover:text-blue-400">Products</a>
+          <a href="#" id="cart-toggle" class="hover:text-blue-500 dark:hover:text-blue-400 flex items-center">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" />
+            </svg>
+            Cart <span id="cart-count" class="ml-1 bg-blue-600 text-white text-xs px-2 py-1 rounded-full">0</span>
+          </a>
+        </div>
+        
+        <button id="mobile-menu-button" class="md:hidden focus:outline-none">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+          </svg>
+        </button>
+      </div>
+      
+      <div id="mobile-menu" class="md:hidden hidden pb-4">
+        <a href="index.html" class="block py-2 hover:text-blue-500 dark:hover:text-blue-400">Home</a>
+        <a href="#products" class="block py-2 hover:text-blue-500 dark:hover:text-blue-400">Products</a>
+        <a href="#" id="cart-toggle-mobile" class="block py-2 hover:text-blue-500 dark:hover:text-blue-400 flex items-center">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" />
+          </svg>
+          Cart <span id="cart-count-mobile" class="ml-1 bg-blue-600 text-white text-xs px-2 py-1 rounded-full">0</span>
+        </a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Hero Section -->
+  <section class="bg-gradient-to-r from-blue-500 to-purple-600 text-white py-16">
+    <div class="container mx-auto px-4 text-center">
+      <h1 class="text-4xl md:text-5xl font-bold mb-4">Trendy Tees for Everyone</h1>
+      <p class="text-xl mb-8">Discover our latest collection of comfortable and stylish t-shirts</p>
+      <a href="#products" class="bg-white text-blue-600 px-6 py-3 rounded-full font-medium hover:bg-gray-100 transition duration-300 inline-block">
+        Shop Now
+      </a>
+    </div>
+  </section>
+
+  <!-- Products Section -->
+  <section id="products" class="py-12">
+    <div class="container mx-auto px-4">
+      <h2 class="text-3xl font-bold text-center mb-12">Our Collection</h2>
+      
+      <!-- Filters -->
+      <div class="flex flex-wrap justify-between items-center mb-8">
+        <div class="mb-4 md:mb-0">
+          <label for="sort" class="mr-2">Sort by:</label>
+          <select id="sort" class="border rounded px-3 py-2 bg-white dark:bg-gray-800">
+            <option value="price-asc">Price: Low to High</option>
+            <option value="price-desc">Price: High to Low</option>
+            <option value="name-asc">Name: A-Z</option>
+            <option value="name-desc">Name: Z-A</option>
+          </select>
+        </div>
+        <div>
+          <label for="filter" class="mr-2">Filter by:</label>
+          <select id="filter" class="border rounded px-3 py-2 bg-white dark:bg-gray-800">
+            <option value="all">All Products</option>
+            <option value="men">Men</option>
+            <option value="women">Women</option>
+            <option value="kids">Kids</option>
+          </select>
+        </div>
+      </div>
+      
+      <!-- Products Grid -->
+      <div id="products-container" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
+        <!-- Products will be loaded here -->
+      </div>
+      
+      <!-- Loading Spinner -->
+      <div id="loading-spinner" class="flex justify-center my-8 hidden">
+        <div class="loading-spinner"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Cart Sidebar -->
+  <div id="cart-sidebar" class="cart-slide fixed top-0 right-0 h-full w-full md:w-96 bg-white dark:bg-gray-800 shadow-lg z-50 overflow-y-auto">
+    <div class="p-6">
+      <div class="flex justify-between items-center mb-6">
+        <h3 class="text-xl font-bold">Your Cart</h3>
+        <button id="close-cart" class="text-gray-500 hover:text-gray-700 dark:hover:text-gray-300">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+          </svg>
+        </button>
+      </div>
+      
+      <div id="cart-items" class="space-y-4">
+        <!-- Cart items will be loaded here -->
+        <p id="empty-cart-message" class="text-center py-8">Your cart is empty</p>
+      </div>
+      
+      <div id="cart-summary" class="border-t border-gray-200 dark:border-gray-700 mt-6 pt-6 hidden">
+        <div class="flex justify-between mb-2">
+          <span>Subtotal:</span>
+          <span id="cart-subtotal">₹0.00</span>
+        </div>
+        <div class="flex justify-between mb-2">
+          <span>Shipping:</span>
+          <span>Free</span>
+        </div>
+        <div class="flex justify-between font-bold text-lg">
+          <span>Total:</span>
+          <span id="cart-total">₹0.00</span>
+        </div>
+        
+        <button id="checkout-btn" class="w-full bg-blue-600 text-white py-3 rounded mt-6 hover:bg-blue-700 transition duration-300">
+          Proceed to Checkout
+        </button>
+      </div>
+    </div>
+  </div>
+  <div id="cart-overlay" class="fixed inset-0 bg-black bg-opacity-50 z-40 hidden"></div>
+
+  <!-- Footer -->
+  <footer class="bg-gray-800 text-white py-12">
+    <div class="container mx-auto px-4">
+      <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+        <div>
+          <h4 class="text-xl font-bold mb-4">Trendy Tees</h4>
+          <p>Quality t-shirts for every occasion. Comfortable, stylish, and affordable.</p>
+        </div>
+        <div>
+          <h4 class="text-lg font-bold mb-4">Quick Links</h4>
+          <ul class="space-y-2">
+            <li><a href="#" class="hover:text-blue-400">Home</a></li>
+            <li><a href="#products" class="hover:text-blue-400">Products</a></li>
+            <li><a href="#" class="hover:text-blue-400">About Us</a></li>
+            <li><a href="#" class="hover:text-blue-400">Contact</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4 class="text-lg font-bold mb-4">Customer Service</h4>
+          <ul class="space-y-2">
+            <li><a href="#" class="hover:text-blue-400">FAQs</a></li>
+            <li><a href="#" class="hover:text-blue-400">Shipping Policy</a></li>
+            <li><a href="#" class="hover:text-blue-400">Returns & Exchanges</a></li>
+            <li><a href="#" class="hover:text-blue-400">Size Guide</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4 class="text-lg font-bold mb-4">Contact Us</h4>
+          <p>Email: info@trendytees.com</p>
+          <p>Phone: +91 9876543210</p>
+          <div class="flex space-x-4 mt-4">
+            <a href="#" class="hover:text-blue-400">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="currentColor" viewBox="0 0 24 24">
+                <path d="M22 12c0-5.523-4.477-10-10-10S2 6.477 2 12c0 4.991 3.657 9.128 8.438 9.878v-6.987h-2.54V12h2.54V9.797c0-2.506 1.492-3.89 3.777-3.89 1.094 0 2.238.195 2.238.195v2.46h-1.26c-1.243 0-1.63.771-1.63 1.562V12h2.773l-.443 2.89h-2.33v6.988C18.343 21.128 22 16.991 22 12z" />
+              </svg>
+            </a>
+            <a href="#" class="hover:text-blue-400">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="currentColor" viewBox="0 0 24 24">
+                <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z" />
+              </svg>
+            </a>
+            <a href="#" class="hover:text-blue-400">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="currentColor" viewBox="0 0 24 24">
+                <path d="M23.953 4.57a10 10 0 01-2.825.775 4.958 4.958 0 002.163-2.723c-.951.555-2.005.959-3.127 1.184a4.92 4.92 0 00-8.384 4.482C7.69 8.095 4.067 6.13 1.64 3.162a4.822 4.822 0 00-.666 2.475c0 1.71.87 3.213 2.188 4.096a4.904 4.904 0 01-2.228-.616v.06a4.923 4.923 0 003.946 4.827 4.996 4.996 0 01-2.212.085 4.936 4.936 0 004.604 3.417 9.867 9.867 0 01-6.102 2.105c-.39 0-.779-.023-1.17-.067a13.995 13.995 0 007.557 2.209c9.053 0 13.998-7.496 13.998-13.985 0-.21 0-.42-.015-.63A9.935 9.935 0 0024 4.59z" />
+              </svg>
+            </a>
+          </div>
+        </div>
+      </div>
+      <div class="border-t border-gray-700 mt-8 pt-8 text-center">
+        <p>&copy; 2023 Trendy Tees. All rights reserved.</p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Product Modal -->
+  <div id="product-modal" class="fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center z-50 hidden">
+    <div class="bg-white dark:bg-gray-800 rounded-lg max-w-4xl w-full mx-4 max-h-screen overflow-y-auto">
+      <div class="p-6">
+        <button id="close-modal" class="absolute top-4 right-4 text-gray-500 hover:text-gray-700 dark:hover:text-gray-300">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+          </svg>
+        </button>
+        
+        <div id="modal-content" class="grid grid-cols-1 md:grid-cols-2 gap-8">
+          <!-- Product details will be loaded here -->
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Sample product data
+    const products = [
+      {
+        id: 1,
+        name: "Classic Black Tee",
+        price: 599,
+        category: "men",
+        image: "https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcSHoBwnNeFhFMTtn5iPr8v2m9muzF4bkNx4Hk8hRg3tt4I2I7aeri8opickGZyUw01e4k--mGiQY2olDz6cYcvazLdemHdB1PrdiTPEZI-L",
+        description: "A timeless classic black t-shirt made from 100% organic cotton. Perfect for any occasion.",
+        sizes: ["S", "M", "L", "XL"]
+      },
+      {
+        id: 2,
+        name: "Vintage White Tee",
+        price: 699,
+        category: "women",
+        image: "https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcSY7fUgBpPMKJNS17WEUKJzw-MdqlhUwVmpVUqKgfqwgxs3ahfK4h_IOOli6iuxZiw1G-1ZU1-p2DOaKnZ38YinPTKztA-sqHC4CYOR9HjwhrsQdVyxikGusw",
+        sizes: ["XS", "S", "M", "L"]
+      },
+      {
+        id: 3,
+        name: "Graphic Print Tee",
+        price: 799,
+        category: "men",
+        image: "https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcQfwrTzYq0IASC4-GHr_H5QThX32JEv8PqLIieeRJvF-l2Jo5Q-QRQ2jTMNRSpuCYO5nRuFkUJ9LjeIht_IgCvJpW4UQpbHQrmdVuJg-4vF",
+        sizes: ["S", "M", "L", "XL", "XXL"]
+      },
+      {
+        id: 4,
+        name: "Striped Polo Tee",
+        price: 899,
+        category: "men",
+        image: "https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcSHoBwnNeFhFMTtn5iPr8v2m9muzF4bkNx4Hk8hRg3tt4I2I7aeri8opickGZyUw01e4k--mGiQY2olDz6cYcvazLdemHdB1PrdiTPEZI-L",
+        sizes: ["M", "L", "XL"]
+      },
+      {
+        id: 5,
+        name: "Pastel Pink Tee",
+        price: 649,
+        category: "women",
+        image: "https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcSHoBwnNeFhFMTtn5iPr8v2m9muzF4bkNx4Hk8hRg3tt4I2I7aeri8opickGZyUw01e4k--mGiQY2olDz6cYcvazLdemHdB1PrdiTPEZI-L",
+        description: "Soft pastel pink t-shirt with a feminine cut. Made from premium cotton blend.",
+        sizes: ["XS", "S", "M"]
+      },
+      {
+        id: 6,
+        name: "Kids Dinosaur Tee",
+        price: 499,
+        category: "kids",
+        image: "https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcSY7fUgBpPMKJNS17WEUKJzw-MdqlhUwVmpVUqKgfqwgxs3ahfK4h_IOOli6iuxZiw1G-1ZU1-p2DOaKnZ38YinPTKztA-sqHC4CYOR9HjwhrsQdVyxikGusw",
+        sizes: ["4-5", "6-7", "8-9"]
+      },
+      {
+        id: 7,
+        name: "Athletic Grey Tee",
+        price: 749,
+        category: "men",
+        image: "https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcQfwrTzYq0IASC4-GHr_H5QThX32JEv8PqLIieeRJvF-l2Jo5Q-QRQ2jTMNRSpuCYO5nRuFkUJ9LjeIht_IgCvJpW4UQpbHQrmdVuJg-4vF",
+        sizes: ["S", "M", "L", "XL"]
+      },
+      {
+        id: 8,
+        name: "Oversized Denium Tshirt",
+        price: 849,
+        category: "women",
+        image: "https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcSHoBwnNeFhFMTtn5iPr8v2m9muzF4bkNx4Hk8hRg3tt4I2I7aeri8opickGZyUw01e4k--mGiQY2olDz6cYcvazLdemHdB1PrdiTPEZI-L",
+        sizes: ["S", "M", "L"]
+      }
+    ];
+
+    // Cart functionality
+    let cart = JSON.parse(localStorage.getItem('cart')) || [];
+    
+    // DOM elements
+    const productsContainer = document.getElementById('products-container');
+    const cartItems = document.getElementById('cart-items');
+    const cartSubtotal = document.getElementById('cart-subtotal');
+    const cartTotal = document.getElementById('cart-total');
+    const cartCount = document.getElementById('cart-count');
+    const cartCountMobile = document.getElementById('cart-count-mobile');
+    const emptyCartMessage = document.getElementById('empty-cart-message');
+    const cartSummary = document.getElementById('cart-summary');
+    const cartSidebar = document.getElementById('cart-sidebar');
+    const cartOverlay = document.getElementById('cart-overlay');
+    const cartToggle = document.getElementById('cart-toggle');
+    const cartToggleMobile = document.getElementById('cart-toggle-mobile');
+    const closeCart = document.getElementById('close-cart');
+    const checkoutBtn = document.getElementById('checkout-btn');
+    const productModal = document.getElementById('product-modal');
+    const modalContent = document.getElementById('modal-content');
+    const closeModal = document.getElementById('close-modal');
+    const sortSelect = document.getElementById('sort');
+    const filterSelect = document.getElementById('filter');
+    const loadingSpinner = document.getElementById('loading-spinner');
+    const mobileMenuButton = document.getElementById('mobile-menu-button');
+    const mobileMenu = document.getElementById('mobile-menu');
+    const scrollTopBtn = document.getElementById('scrollTopBtn');
+
+    // Initialize the page
+    document.addEventListener('DOMContentLoaded', () => {
+      renderProducts(products);
+      updateCartUI();
+      
+      // Mobile menu toggle
+      mobileMenuButton.addEventListener('click', () => {
+        mobileMenu.classList.toggle('hidden');
+      });
+      
+      // Cart toggle events
+      cartToggle.addEventListener('click', (e) => {
+        e.preventDefault();
+        toggleCart();
+      });
+      
+      cartToggleMobile.addEventListener('click', (e) => {
+        e.preventDefault();
+        toggleCart();
+        mobileMenu.classList.add('hidden');
+      });
+      
+      closeCart.addEventListener('click', toggleCart);
+      cartOverlay.addEventListener('click', toggleCart);
+      
+      // Checkout button
+      checkoutBtn.addEventListener('click', () => {
+        alert('Checkout functionality would be implemented here in a real application.');
+      });
+      
+      // Close modal
+      closeModal.addEventListener('click', () => {
+        productModal.classList.add('hidden');
+      });
+      
+      // Sort and filter events
+      sortSelect.addEventListener('change', handleSortFilter);
+      filterSelect.addEventListener('change', handleSortFilter);
+      
+      // Scroll to top button
+      window.addEventListener('scroll', () => {
+        scrollTopBtn.style.display = window.scrollY > 200 ? 'block' : 'none';
+      });
+      
+      scrollTopBtn.addEventListener('click', () => {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      });
+    });
+
+    // Toggle cart visibility
+    function toggleCart() {
+      cartSidebar.classList.toggle('open');
+      cartOverlay.classList.toggle('hidden');
+      document.body.classList.toggle('overflow-hidden');
+    }
+
+    // Render products
+    function renderProducts(productsToRender) {
+      productsContainer.innerHTML = '';
+      
+      if (productsToRender.length === 0) {
+        productsContainer.innerHTML = '<p class="col-span-full text-center py-8">No products found matching your criteria.</p>';
+        return;
+      }
+      
+      productsToRender.forEach(product => {
+        const productCard = document.createElement('div');
+        productCard.className = 'product-card bg-white dark:bg-gray-800 rounded-lg shadow-md overflow-hidden hover:shadow-lg';
+        productCard.innerHTML = `
+          <div class="relative pb-3/4 h-64">
+            <img src="${product.image}" alt="${product.name}" class="absolute h-full w-full object-cover cursor-pointer" onclick="openProductModal(${product.id})">
+          </div>
+          <div class="p-4">
+            <h3 class="font-semibold text-lg mb-1">${product.name}</h3>
+            <p class="text-blue-600 dark:text-blue-400 font-bold mb-3">₹${product.price.toFixed(2)}</p>
+            <button onclick="addToCart(${product.id})" class="w-full bg-blue-600 text-white py-2 rounded hover:bg-blue-700 transition duration-300">
+              Add to Cart
+            </button>
+          </div>
+        `;
+        productsContainer.appendChild(productCard);
+      });
+    }
+
+    // Open product modal
+    window.openProductModal = function(productId) {
+      const product = products.find(p => p.id === productId);
+      if (!product) return;
+      
+      modalContent.innerHTML = `
+        <div class="h-64 md:h-96">
+          <img src="${product.image}" alt="${product.name}" class="h-full w-full object-contain">
+        </div>
+        <div>
+          <h2 class="text-2xl font-bold mb-2">${product.name}</h2>
+          <p class="text-blue-600 dark:text-blue-400 text-xl font-bold mb-4">₹${product.price.toFixed(2)}</p>
+          <p class="text-gray-600 dark:text-gray-300 mb-6">${product.description}</p>
+          
+          <div class="mb-6">
+            <label class="block text-sm font-medium mb-2">Size:</label>
+            <div class="flex space-x-2">
+              ${product.sizes.map(size => `
+                <button class="border rounded px-3 py-1 hover:bg-gray-100 dark:hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                  ${size}
+                </button>
+              `).join('')}
+            </div>
+          </div>
+          
+          <button onclick="addToCart(${product.id}, true)" class="w-full bg-blue-600 text-white py-3 rounded hover:bg-blue-700 transition duration-300 mb-4">
+            Add to Cart
+          </button>
+          
+          <div class="flex items-center text-sm text-gray-500 dark:text-gray-400">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 8h14M5 8a2 2 0 110-4h14a2 2 0 110 4M5 8v10a2 2 0 002 2h10a2 2 0 002-2V8m-9 4h4" />
+            </svg>
+            Free shipping on orders over ₹1000
+          </div>
+        </div>
+      `;
+      
+      productModal.classList.remove('hidden');
+    };
+
+    // Add to cart
+    window.addToCart = function(productId, fromModal = false) {
+      const product = products.find(p => p.id === productId);
+      if (!product) return;
+      
+      // Check if product already in cart
+      const existingItem = cart.find(item => item.id === productId);
+      
+      if (existingItem) {
+        existingItem.quantity += 1;
+      } else {
+        cart.push({
+          ...product,
+          quantity: 1,
+          selectedSize: 'M' // Default size
+        });
+      }
+      
+      // Save to localStorage
+      localStorage.setItem('cart', JSON.stringify(cart));
+      
+      // Update UI
+      updateCartUI();
+      
+      // Show feedback
+      const feedback = document.createElement('div');
+      feedback.className = 'fixed bottom-4 right-4 bg-green-500 text-white px-4 py-2 rounded shadow-lg fade-in';
+      feedback.textContent = `${product.name} added to cart!`;
+      document.body.appendChild(feedback);
+      
+      setTimeout(() => {
+        feedback.classList.add('opacity-0', 'transition-opacity', 'duration-300');
+        setTimeout(() => feedback.remove(), 300);
+      }, 2000);
+      
+      // Close modal if added from there
+      if (fromModal) {
+        productModal.classList.add('hidden');
+      }
+    };
+
+    // Remove from cart
+    window.removeFromCart = function(productId) {
+      cart = cart.filter(item => item.id !== productId);
+      localStorage.setItem('cart', JSON.stringify(cart));
+      updateCartUI();
+    };
+
+    // Update quantity
+    window.updateQuantity = function(productId, change) {
+      const item = cart.find(item => item.id === productId);
+      if (!item) return;
+      
+      item.quantity += change;
+      
+      if (item.quantity <= 0) {
+        cart = cart.filter(i => i.id !== productId);
+      }
+      
+      localStorage.setItem('cart', JSON.stringify(cart));
+      updateCartUI();
+    };
+
+    // Update cart UI
+    function updateCartUI() {
+      // Update cart items
+      cartItems.innerHTML = '';
+      
+      if (cart.length === 0) {
+        emptyCartMessage.classList.remove('hidden');
+        cartSummary.classList.add('hidden');
+      } else {
+        emptyCartMessage.classList.add('hidden');
+        cartSummary.classList.remove('hidden');
+        
+        let subtotal = 0;
+        
+        cart.forEach(item => {
+          const itemTotal = item.price * item.quantity;
+          subtotal += itemTotal;
+          
+          const cartItem = document.createElement('div');
+          cartItem.className = 'flex items-start border-b border-gray-200 dark:border-gray-700 pb-4';
+          cartItem.innerHTML = `
+            <img src="${item.image}" alt="${item.name}" class="w-16 h-16 object-cover rounded mr-4">
+            <div class="flex-1">
+              <h4 class="font-medium">${item.name}</h4>
+              <p class="text-sm text-gray-500 dark:text-gray-400">Size: ${item.selectedSize}</p>
+              <p class="text-blue-600 dark:text-blue-400 font-bold">₹${item.price.toFixed(2)}</p>
+              <div class="flex items-center mt-2">
+                <button onclick="updateQuantity(${item.id}, -1)" class="bg-gray-200 dark:bg-gray-700 px-2 py-1 rounded-l">
+                  -
+                </button>
+                <span class="bg-gray-100 dark:bg-gray-800 px-4 py-1">${item.quantity}</span>
+                <button onclick="updateQuantity(${item.id}, 1)" class="bg-gray-200 dark:bg-gray-700 px-2 py-1 rounded-r">
+                  +
+                </button>
+                <button onclick="removeFromCart(${item.id})" class="ml-auto text-red-500 hover:text-red-700 dark:hover:text-red-400">
+                  <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                  </svg>
+                </button>
+              </div>
+            </div>
+          `;
+          cartItems.appendChild(cartItem);
+        });
+        
+        cartSubtotal.textContent = `₹${subtotal.toFixed(2)}`;
+        cartTotal.textContent = `₹${subtotal.toFixed(2)}`;
+      }
+      
+      // Update cart count
+      const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
+      cartCount.textContent = totalItems;
+      cartCountMobile.textContent = totalItems;
+    }
+
+    // Handle sort and filter
+    function handleSortFilter() {
+      loadingSpinner.classList.remove('hidden');
+      
+      setTimeout(() => {
+        const sortValue = sortSelect.value;
+        const filterValue = filterSelect.value;
+        
+        let filteredProducts = [...products];
+        
+        // Apply filter
+        if (filterValue !== 'all') {
+          filteredProducts = filteredProducts.filter(product => product.category === filterValue);
+        }
+        
+        // Apply sort
+        switch (sortValue) {
+          case 'price-asc':
+            filteredProducts.sort((a, b) => a.price - b.price);
+            break;
+          case 'price-desc':
+            filteredProducts.sort((a, b) => b.price - a.price);
+            break;
+          case 'name-asc':
+            filteredProducts.sort((a, b) => a.name.localeCompare(b.name));
+            break;
+          case 'name-desc':
+            filteredProducts.sort((a, b) => b.name.localeCompare(a.name));
+            break;
+        }
+        
+        renderProducts(filteredProducts);
+        loadingSpinner.classList.add('hidden');
+      }, 500);
+    }
+  </script>
+</body>
+</html>
