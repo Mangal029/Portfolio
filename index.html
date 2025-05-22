@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en" class="transition duration-300">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Mangal Dwivedi - Portfolio, Education, Goals, Achievements" />
+  <meta name="author" content="Mangal Dwivedi" />
+  <meta property="og:title" content="Mangal Dwivedi | Portfolio" />
+  <meta property="og:description" content="Personal introduction portfolio site." />
+  <meta property="og:image" content="Profile.jpg" />
+  <meta name="theme-color" content="#ffffff" />
+  <title>Mangal Dwivedi | Portfolio</title>
+  <link rel="icon" href="favicon.ico" />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Inter', 'sans-serif'],
+          },
+        }
+      }
+    }
+  </script>
+  <style>
+    html { scroll-behavior: smooth; }
+    .fade-in-up {
+      opacity: 0;
+      transform: translateY(20px);
+      animation: fadeInUp 1s ease-out forwards;
+    }
+    @keyframes fadeInUp {
+      to { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes blink {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0; }
+    }
+    .blink {
+      animation: blink 1s infinite;
+    }
+    .scroll-to-top {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      display: none;
+      background-color: #2563eb;
+      color: white;
+      border-radius: 50%;
+      padding: 0.5rem 0.7rem;
+      font-size: 1.5rem;
+      cursor: pointer;
+      z-index: 1000;
+    }
+    .scroll-to-top:hover {
+      background-color: #1d4ed8;
+    }
+  </style>
+</head>
+<body class="bg-white dark:bg-gray-900 text-gray-800 dark:text-gray-100 font-sans transition duration-300">
+
+<!-- Scroll to Top Button -->
+<button id="scrollTopBtn" class="scroll-to-top">&#8679;</button>
+
+<!-- Navbar -->
+<header class="bg-white dark:bg-gray-900 shadow sticky top-0 z-50 transition">
+  <nav class="container mx-auto px-6 py-4 flex flex-wrap justify-between items-center">
+    <div class="flex items-center justify-between w-full md:w-auto">
+      <h1 class="text-2xl font-bold text-blue-700 dark:text-blue-300 blink">My Portfolio</h1>
+      <button id="menu-toggle" class="md:hidden block text-blue-700 dark:text-blue-300 focus:outline-none">
+        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                d="M4 6h16M4 12h16M4 18h16" />
+        </svg>
+      </button>
+    </div>
+    <div id="menu" class="w-full md:flex md:items-center md:w-auto hidden mt-4 md:mt-0">
+      <ul class="flex flex-col md:flex-row gap-4 md:gap-6 items-center text-sm font-medium">
+        <li><a href="#home" class="hover:text-blue-500 dark:hover:text-blue-400">Home</a></li>
+        <li><a href="#about" class="hover:text-blue-500 dark:hover:text-blue-400">About</a></li>
+        <li><a href="#projects" class="hover:text-blue-500 dark:hover:text-blue-400">Projects</a></li>
+        <li><a href="#goals" class="hover:text-blue-500 dark:hover:text-blue-400">Goals</a></li>
+         <li><a href="Shopindex.html" class="hover:text-blue-500 dark:hover:text-blue-400">Shop</a></li>
+        <li><a href="#contact" class="hover:text-blue-500 dark:hover:text-blue-400">Contact</a></li>
+        <li>
+
+          <input type="text" placeholder="Search..."
+                 class="px-3 py-1 rounded-md border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-sm text-gray-800 dark:text-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-500" />
+        </li>
+        <li>
+          <button id="theme-toggle" class="ml-2 p-2 rounded-full bg-blue-600 dark:bg-gray-700 text-white hover:bg-blue-700 dark:hover:bg-gray-600 transition" title="Toggle Theme">
+            <svg id="theme-icon" xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="" />
+            </svg>
+          </button>
+        </li>
+      </ul>
+    </div>
+  </nav>
+</header>
+
+<!-- Hero Section -->
+<section id="home" class="text-center py-20 bg-gradient-to-r from-blue-100 to-blue-200 dark:from-gray-800 dark:to-gray-700">
+  <div class="container mx-auto px-4 fade-in-up">
+    <img src="Profile.jpg" alt="Mangal Dwivedi Profile Picture" class="mx-auto w-36 h-36 rounded-full border-4 border-blue-500 shadow-lg mb-6">
+    <h2 class="text-4xl font-bold text-blue-800 dark:text-blue-200 mb-2">Hi, I'm Mangal Dwivedi</h2>
+    <p class="text-lg text-blue-700 dark:text-blue-300">Aspiring Frontend developer passionate about innovation and real-world impact.</p>
+  </div>
+</section>
+
+<!-- About Section -->
+<section id="about" class="py-16 bg-white dark:bg-gray-900">
+  <div class="container mx-auto px-4 max-w-3xl text-center fade-in-up">
+    <h2 class="text-3xl font-bold text-blue-700 dark:text-blue-300 mb-6">👨‍💻 About Me</h2>
+    <div class="text-lg space-y-2 text-left">
+      <p><strong>Name:</strong> Mangal Dwivedi</p>
+      <p><strong>Location:</strong> Maharashtra, India</p>
+      <p><strong>Education:</strong> BTech in Electronics and Telecommunication</p>
+      <p><strong>Languages:</strong> English, Hindi</p>
+    </div>
+  </div>
+</section>
+
+<!-- Projects Section -->
+<section id="projects" class="py-16 bg-blue-50 dark:bg-gray-800">
+  <div class="container mx-auto px-4 max-w-3xl text-center fade-in-up">
+    <h2 class="text-3xl font-bold text-blue-700 dark:text-blue-300 mb-6">🚀 Projects & Achievements</h2>
+    <ul class="text-lg list-disc list-inside text-left space-y-3">
+      <li>Built a mini Land Rover robot using ESP32 and motor driver BTS7690</li>
+      <li>Developed a Smart Home Automation System with voice control</li>
+    </ul>
+  </div>
+</section>
+
+<!-- Goals Section -->
+<section id="goals" class="py-16 bg-white dark:bg-gray-900">
+  <div class="container mx-auto px-4 max-w-3xl text-center fade-in-up">
+    <h2 class="text-3xl font-bold text-blue-700 dark:text-blue-300 mb-6">🎯 My Goals</h2>
+    <p class="text-lg">
+      To become a Frontend developer, contribute to open-source, and build impactful technology solutions. I also enjoy mentoring beginners and aim to collaborate with innovative startups.
+    </p>
+  </div>
+</section>
+
+<!-- Contact Section -->
+<section id="contact" class="py-16 bg-blue-100 dark:bg-gray-800">
+  <div class="container mx-auto px-4 max-w-3xl text-center fade-in-up">
+    <h2 class="text-3xl font-bold text-blue-700 dark:text-blue-300 mb-6">📬 Contact</h2>
+    <div class="text-lg space-y-3 text-left">
+      <p><strong>📞 Mobile No:</strong> <a href="tel:+919960226236" class="text-blue-600 dark:text-blue-400 hover:underline">9960226236</a></p>
+      <p><strong>💬 WhatsApp:</strong> <a href="https://wa.me/919960226236" class="text-blue-600 dark:text-blue-400 hover:underline" target="_blank">Chat on WhatsApp</a></p>
+      <p><strong>📧 Email:</strong> <a href="mailto:dwivedimangalpubg@gmail.com" class="text-blue-600 dark:text-blue-400 hover:underline">dwivedimangalpubg@gmail.com</a></p>
+      <!-- Contact Form -->
+      <form class="space-y-4 mt-8 text-gray-800 dark:text-gray-200" action="#" method="POST">
+        <input type="text" name="name" placeholder="Your Name" required
+          class="w-full px-4 py-2 rounded-md border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500" />
+        <input type="email" name="email" placeholder="Your Email" required
+          class="w-full px-4 py-2 rounded-md border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500" />
+        <input type="text" name="subject" placeholder="Subject" required
+          class="w-full px-4 py-2 rounded-md border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500" />
+        <textarea name="message" rows="5" placeholder="Your Message" required
+          class="w-full px-4 py-2 rounded-md border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500"></textarea>
+        <button type="submit"
+          class="bg-blue-600 text-white px-6 py-2 rounded-md hover:bg-blue-700 transition">Send Message</button>
+      </form>
+
+      <!-- Map -->
+      <div class="mt-10">
+        <iframe src="https://maps.google.com/maps?q=Mumbai&t=&z=13&ie=UTF8&iwloc=&output=embed"
+                class="w-full h-64 rounded-md border border-indigo-300"
+                allowfullscreen=""
+                loading="lazy"
+                referrerpolicy="no-referrer-when-downgrade"
+                title="Location Map">
+        </iframe>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Footer -->
+<footer class="bg-blue-700 dark:bg-gray-900 text-white py-6 text-center">
+  <p class="mb-2">© 2025 Mangal Dwivedi</p>
+  <p>
+    <a href="https://github.com/Mangal029" class="underline hover:text-gray-300" target="_blank">🐙 GitHub</a> |
+    <a href="https://www.linkedin.com/in/mangal-dwivedi-a9054a31a" class="underline hover:text-gray-300" target="_blank">🔗 LinkedIn</a>
+  </p>
+</footer>
+
+<!-- JavaScript -->
+<script>
+  const html = document.documentElement;
+  const icon = document.getElementById('theme-icon');
+  const savedTheme = localStorage.getItem('theme');
+
+  function updateIcon(isDark) {
+    icon.innerHTML = isDark
+      ? '<path d="M21 12.79A9 9 0 1111.21 3a7 7 0 109.79 9.79z"/>'
+      : '<path d="M12 3v1m0 16v1m8.66-8.66l-.71.71M4.34 4.34l-.71.71M21 12h-1M4 12H3m16.95 4.95l-.71-.71M4.34 19.66l-.71-.71M12 5a7 7 0 100 14 7 7 0 000-14z"/>';
+  }
+
+  if (savedTheme === 'dark') {
+    html.classList.add('dark');
+    updateIcon(true);
+  } else {
+    updateIcon(false);
+  }
+
+  document.getElementById('theme-toggle').addEventListener('click', () => {
+    html.classList.toggle('dark');
+    const isDark = html.classList.contains('dark');
+    localStorage.setItem('theme', isDark ? 'dark' : 'light');
+    updateIcon(isDark);
+  });
+
+  document.getElementById('menu-toggle').addEventListener('click', () => {
+    document.getElementById('menu').classList.toggle('hidden');
+  });
+
+  const scrollBtn = document.getElementById("scrollTopBtn");
+  window.onscroll = () => {
+    scrollBtn.style.display = window.scrollY > 200 ? "block" : "none";
+  };
+  scrollBtn.onclick = () => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  };
+</script>
+
+</body>
+</html>
+
